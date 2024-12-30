@@ -10,7 +10,7 @@ const CallScreen = () => {
   const [remoteUsers, setRemoteUsers] = useState({});
 
   const appID = "18f703bfff9345528a1e8de237affa3c"; // From .env file
-  const serverURL = "http://localhost:5000"; // Your backend server
+  const serverURL = "https://backend-agora-voicecall.onrender.com"; // Your backend server
 
   const joinChannel = async (channelName, uid) => {
     try {
