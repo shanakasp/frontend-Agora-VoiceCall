@@ -1,6 +1,7 @@
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import "./CallScreen.css"; // Import custom styles for the UI
 
 const CallScreen = () => {
   const [client] = useState(() =>
@@ -8,9 +9,11 @@ const CallScreen = () => {
   );
   const [localTracks, setLocalTracks] = useState({ video: null, audio: null });
   const [remoteUsers, setRemoteUsers] = useState({});
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
 
-  const appID = "18f703bfff9345528a1e8de237affa3c"; // From .env file
-  const serverURL = "https://backend-agora-voicecall.onrender.com"; // Your backend server
+  const appID = "18f703bfff9345528a1e8de237affa3c"; // Your Agora app ID
+  const serverURL = "https://backend-agora-voicecall.onrender.com"; // Your backend server URL
 
   const joinChannel = async (channelName, uid) => {
     try {
@@ -63,6 +66,33 @@ const CallScreen = () => {
     }
   };
 
+  const toggleAudio = async () => {
+    if (localTracks.audio) {
+      // Toggle audio
+      if (isAudioMuted) {
+        localTracks.audio.setEnabled(true); // Unmute
+      } else {
+        localTracks.audio.setEnabled(false); // Mute
+      }
+      setIsAudioMuted(!isAudioMuted); // Update mute state
+    } else {
+      console.error("Audio track is not available");
+    }
+  };
+
+  const toggleVideo = async () => {
+    if (localTracks.video) {
+      if (isVideoMuted) {
+        localTracks.video.setEnabled(true);
+      } else {
+        localTracks.video.setEnabled(false);
+      }
+      setIsVideoMuted(!isVideoMuted);
+    } else {
+      console.error("Video track is not available");
+    }
+  };
+
   useEffect(() => {
     client.on("user-published", async (user, mediaType) => {
       await client.subscribe(user, mediaType);
@@ -70,9 +100,8 @@ const CallScreen = () => {
         const remoteVideoTrack = user.videoTrack;
         const playerContainer = document.createElement("div");
         playerContainer.id = user.uid;
-        playerContainer.style.width = "200px";
-        playerContainer.style.height = "150px";
-        document.body.append(playerContainer);
+        playerContainer.classList.add("remote-player");
+        document.getElementById("remote-players").append(playerContainer);
         remoteVideoTrack.play(playerContainer);
       }
       if (mediaType === "audio") {
@@ -91,16 +120,38 @@ const CallScreen = () => {
   }, [client]);
 
   return (
-    <div>
-      <button
-        onClick={() =>
-          joinChannel("testChannel", Math.floor(Math.random() * 1000))
-        }
-      >
-        Join Call
-      </button>
-      <button onClick={leaveChannel}>Leave Call</button>
-      <div id="local-player" style={{ width: "400px", height: "300px" }}></div>
+    <div className="call-screen">
+      <div className="call-header">
+        <h1>Agora Video Call</h1>
+        <button className="leave-btn" onClick={leaveChannel}>
+          Leave Call
+        </button>
+      </div>
+
+      <div className="video-container">
+        <div id="local-player" className="local-player"></div>
+        <div id="remote-players" className="remote-players"></div>
+      </div>
+
+      <div className="controls">
+        <button className="control-btn" onClick={toggleAudio}>
+          {isAudioMuted ? "Unmute" : "Mute"} Audio
+        </button>
+        <button className="control-btn" onClick={toggleVideo}>
+          {isVideoMuted ? "Turn On Video" : "Turn Off Video"}
+        </button>
+      </div>
+
+      <div className="join-btn-container">
+        <button
+          className="join-btn"
+          onClick={() =>
+            joinChannel("testChannel", Math.floor(Math.random() * 1000))
+          }
+        >
+          Join Call
+        </button>
+      </div>
     </div>
   );
 };

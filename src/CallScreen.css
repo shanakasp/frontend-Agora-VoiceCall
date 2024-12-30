@@ -1,0 +1,96 @@
+/* CallScreen.css */
+
+/* General Layout */
+.call-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+.call-header {
+  display: flex;
+  justify-content: space-between;
+  width: 98%;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+}
+
+.leave-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.local-player {
+  width: 400px;
+  height: 300px;
+  background-color: black;
+  position: relative;
+}
+
+.remote-players {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.remote-player {
+  width: 200px;
+  height: 150px;
+  background-color: #000;
+  position: relative;
+}
+
+.controls {
+  margin-top: 20px;
+}
+
+.control-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.control-btn:hover {
+  background-color: #2980b9;
+}
+
+.join-btn-container {
+  margin-top: 20px;
+}
+
+.join-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.join-btn:hover {
+  background-color: #27ae60;
+}
